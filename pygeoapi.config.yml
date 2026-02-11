@@ -1,0 +1,70 @@
+# pygeoapi YAML configuration
+
+server:
+  bind:
+    host: 0.0.0.0
+    port: 80
+  url: ${PYGEOAPI_SERVER_URL:-http://localhost:5001}
+  mimetype: application/json; charset=UTF-8
+  encoding: utf-8
+  gzip: false
+  languages:
+    - en-US
+  cors: true
+  pretty_print: true
+  limits:
+    default: 10
+    maximum: 100
+  # TinyDB-based job manager for async process execution
+  manager:
+    name: TinyDB
+    connection: /tmp/pygeoapi-process-manager.db
+    output_dir: /tmp/
+
+logging:
+  level: DEBUG
+  logfile: /tmp/pygeoapi.log
+
+metadata:
+  identification:
+    title: OGC API - Processes Backend
+    description: A modular OGC API - Processes backend powered by pygeoapi. Supports sync/async geospatial process execution.
+    keywords:
+      - ogc
+      - api
+      - processes
+      - geospatial
+    keywords_type: theme
+    terms_of_service: https://creativecommons.org/licenses/by/4.0/
+    url: https://github.com/geopython/pygeoapi
+  license:
+    name: CC-BY 4.0 license
+    url: https://creativecommons.org/licenses/by/4.0/
+  provider:
+    name: OGC-MCP Project
+    url: https://pygeoapi.io
+  contact:
+    name: Admin
+    position: Developer
+    address: N/A
+    city: N/A
+    stateorprovince: N/A
+    postalcode: N/A
+    country: N/A
+    email: admin@example.org
+    url: https://example.org
+    role: pointOfContact
+
+resources:
+  hello-world:
+    type: process
+    processor:
+      name: HelloWorld
+
+  # ---------------------------------------------------------------
+  # Custom: Geometry Buffer Process
+  # ---------------------------------------------------------------
+  geometry-buffer:
+    type: process
+    processor:
+      name: ogc_processes.buffer_process.GeometryBufferProcessor

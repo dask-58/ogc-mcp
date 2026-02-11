@@ -1,0 +1,24 @@
+services:
+  pygeoapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ogc-processes
+    ports:
+      - "5001:80"
+    environment:
+      - PYGEOAPI_SERVER_URL=http://localhost:5001
+      - PYGEOAPI_CONFIG=/pygeoapi/local.config.yml
+      - PYGEOAPI_OPENAPI=/pygeoapi/local.openapi.yml
+      - PYTHONPATH=/pygeoapi
+    volumes:
+      # Mount for live config editing (optional)
+      - ./pygeoapi.config.yml:/pygeoapi/local.config.yml
+      - ./processes:/pygeoapi/ogc_processes
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
