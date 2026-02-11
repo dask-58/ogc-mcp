@@ -1,5 +1,8 @@
 # OGC API – Processes Backend
 
+> [!NOTE]
+> Read the full blog post here: [Building an OGC API](https://dask-58.github.io/ogc-mcp/)
+
 A backend implementing the **OGC API – Processes** standard, powered by [pygeoapi](https://pygeoapi.io).
 
 ---
