@@ -162,7 +162,7 @@
     </ul>
 
     <h2 id="architecture">Architecture &amp; Tech Stack</h2>
-    <img src="images/arch.png" alt="OGC API Architecture">
+    <img src="images/arch.webp" alt="OGC API Architecture">
 
     <h3>The tech involved</h3>
     <ul>
@@ -187,12 +187,12 @@
     <p>
         Writing the process plugin meant implementing pygeoapi's <code>BaseProcessor</code> class. The key parts:
     </p>
-    <img src="images/c1.png" alt="Buffer Process">
+    <img src="images/c1.webp" alt="Buffer Process">
 
     <p>
         Then it's just a matter of registering it in the YAML config:
     </p>
-    <img src="images/c2.png" alt="Buffer Process">
+    <img src="images/c2.webp" alt="Buffer Process">
 
     <p>That's it. pygeoapi picks it up, generates the OpenAPI spec, and exposes it at <code>/processes/geometry-buffer</code>.</p>
 
@@ -200,11 +200,11 @@
     <p>
         Want to see it in action? Here is a simple Python script that sends a Polygon to the API and asks for a 0.5 degree buffer.
     </p>
-    <img src="images/cl.png" alt="Client">
+    <img src="images/cl.webp" alt="Client">
     <p>
         And here is the output you get back:
     </p>
-    <img src="images/out.png" alt="Output">
+    <img src="images/out.webp" alt="Output">
 
     <p style="background-color: #fafafa; border-left: 4px solid #1a6fb5; padding: 1rem; margin: 1.5rem 0;">
         <strong>What we wished:</strong> We sent a <code>1x1</code> square (coordinates <code>0,0</code> to <code>1,1</code>) and asked for a <code>0.5</code> degree buffer. Note that the input has 5 coordinates because GeoJSON requires polygons to be "closed" (the last point must equal the first).<br>
@@ -215,7 +215,7 @@
     <p>
         Here's a simple visualization demonstrating our execution:
     </p>
-    <img src="images/comp.png" alt="Visualization">
+    <img src="images/comp.webp" alt="Visualization">
     <p style="background-color: #fafafa; border-left: 4px solid #1a6fb5; padding: 1rem; margin: 1.5rem 0;">Image Credits : Google Gemini 3 Pro (Nano Banana Pro).</p>
 
     <h2 id="debugging">A tiny mistake I made during the setup</h2>
@@ -262,7 +262,7 @@
         <li>Jobs endpoint returns the job list</li>
     </ol>
 
-    <img src="images/tests.png" alt="Buffer Process">
+    <img src="images/tests.webp" alt="Buffer Process">
 
     <h2 id="next">What's Next</h2>
     <p>
