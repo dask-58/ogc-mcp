@@ -3,78 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Building an OGC API</title>
+    <title>Building an OGC API: The Foundation for AI GIS</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
     <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-main: #374151;
+            --text-heading: #111827;
+            --text-muted: #6b7280;
+            --accent: #2563eb;
+            --border-color: #e5e7eb;
+            --code-bg: #f3f4f6;
+            --code-text: #be123c;
+            --pre-bg: #0f172a;
+            --pre-text: #e2e8f0;
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            font-family: 'Google Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            color: #222;
-            background: #fafafa;
-            line-height: 1.8;
-            max-width: 740px;
+            font-family: 'Open Sans', system-ui, -apple-system, sans-serif;
+            color: var(--text-main);
+            background: var(--bg-color);
+            line-height: 1.75;
+            max-width: 700px;
             margin: 0 auto;
-            padding: 2rem 1.5rem;
+            padding: 4rem 1.5rem;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
         }
-        h1 { font-size: 2rem; margin-bottom: 0.3rem; line-height: 1.3; }
-        h2 { font-size: 1.4rem; margin: 2.2rem 0 0.8rem; border-bottom: 1px solid #ddd; padding-bottom: 0.3rem; }
-        h3 { font-size: 1.15rem; margin: 1.5rem 0 0.5rem; }
-        p { margin-bottom: 1rem; }
-        a { color: #1a6fb5; }
+
+        h1, h2, h3, h4 {
+            color: var(--text-heading);
+            font-weight: 600;
+            line-height: 1.3;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        h1 { font-size: 2.25rem; font-weight: 700; margin-top: 0; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+        h2 { font-size: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; }
+        h3 { font-size: 1.25rem; }
+
+        p { margin-bottom: 1.25rem; }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s ease;
+        }
+        a:hover { border-bottom-color: var(--accent); }
+
+        ul, ol { margin-bottom: 1.25rem; padding-left: 1.5rem; }
+        li { margin-bottom: 0.5rem; }
+
+        .meta { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 3rem; display: flex; gap: 1.5rem; }
+
         code {
-            font-family: 'SF Mono', 'Fira Code', monospace;
-            background: #f0f0f0;
-            padding: 0.15em 0.4em;
-            border-radius: 3px;
-            font-size: 0.9em;
+            font-family: 'Fira Code', 'SF Mono', monospace;
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 0.2em 0.4em;
+            border-radius: 4px;
+            font-size: 0.85em;
         }
+
         pre {
-            background: #1e1e2e;
-            color: #cdd6f4;
-            padding: 1.2rem;
-            border-radius: 6px;
+            background: var(--pre-bg);
+            color: var(--pre-text);
+            padding: 1.25rem 1.5rem;
+            border-radius: 8px;
             overflow-x: auto;
-            margin: 1rem 0 1.5rem;
-            font-size: 0.88em;
-            line-height: 1.6;
+            margin: 1.5rem 0 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
-        pre code { background: none; padding: 0; color: inherit; }
-        .meta { color: #666; font-size: 0.95rem; margin-bottom: 2rem; }
-        .meta span { margin-right: 1.2rem; }
+        
+        pre code { background: none; color: inherit; padding: 0; font-size: 0.85em; border-radius: 0; }
+
         img {
             max-width: 100%;
-            border-radius: 6px;
-            margin: 1rem 0;
-            border: 1px solid #e0e0e0;
+            height: auto;
+            border-radius: 8px;
+            margin: 2rem 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            display: block;
         }
+
+        .image-caption { font-size: 0.85rem; color: var(--text-muted); margin-top: -1.5rem; margin-bottom: 2rem; text-align: center; }
+
         blockquote {
-            border-left: 3px solid #1a6fb5;
-            padding-left: 1rem;
-            margin: 1.2rem 0;
-            color: #555;
+            border-left: 4px solid var(--accent);
+            margin: 2rem 0;
+            padding: 0.5rem 0 0.5rem 1.5rem;
+            color: var(--text-muted);
             font-style: italic;
+            font-size: 1.05rem;
         }
-        .tags { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #ddd; }
-        .tags span {
-            display: inline-block;
-            background: #e8f0fe;
-            color: #1a6fb5;
-            padding: 0.2em 0.7em;
-            border-radius: 3px;
-            font-size: 0.82rem;
-            margin: 0.2rem 0.3rem 0.2rem 0;
+
+        table { width: 100%; border-collapse: collapse; margin: 2rem 0; font-size: 0.95rem; }
+        th, td { text-align: left; padding: 0.75rem 1rem; border-bottom: 1px solid var(--border-color); }
+        th { color: var(--text-heading); font-weight: 600; background: #f9fafb; }
+
+        .highlight { background: #fefce8; padding: 1.25rem 1.5rem; border-radius: 8px; margin: 2rem 0; border-left: 4px solid #eab308; }
+        
+        .challenge-box {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
         }
-        table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; font-size: 0.92rem; }
-        th, td { text-align: left; padding: 0.6rem 0.8rem; border: 1px solid #ddd; }
-        th { background: #f0f0f0; }
-        .highlight { background: #fffde7; padding: 1rem; border-radius: 6px; margin: 1rem 0; border-left: 3px solid #f9a825; }
+
+        .toc {
+            background: #f9fafb;
+            padding: 1.5rem 2rem;
+            border-radius: 8px;
+            margin: 2.5rem 0;
+            border: 1px solid var(--border-color);
+        }
+        
+        .toc strong { display: block; color: var(--text-heading); margin-bottom: 1rem; font-size: 1.1rem; }
+        .toc ul { margin: 0; padding-left: 0; list-style-type: none; }
+        .toc li { margin-bottom: 0.5rem; }
+        .toc a { color: var(--text-main); }
+        .toc a:hover { color: var(--accent); }
+        
+        hr { border: 0; height: 1px; background: var(--border-color); margin: 3rem 0; }
+        .footer-note { font-size: 0.85rem; color: var(--text-muted); margin-top: 1rem; font-style: italic; }
     </style>
 </head>
 <body>
 
-    <h1>Building an OGC API</h1>
+    <h1>Building an OGC API: The Foundation for AI GIS</h1>
     <div class="meta">
         <span>📅 February 11, 2026</span>
         <span>✍️ Dhruv Koli</span>
@@ -82,214 +148,277 @@
 
     <h2>Introduction</h2>
     <p>
-        Imagine you want to know, "Which parks are within a 5-minute walk of a school?"
-        In the future of Geospatial IT, you might ask an AI agent to figure this out for you. But for that AI to work, it needs a standardized way to talk to mapping software. It needs a "brain" that understands commands like "calculate buffer" or "find intersection."
-        This week, as part of my preparation for the Google Summer of Code (GSoC) 2026 application with 52°North, I built exactly that: a standardized backend that serves as the foundation for connecting AI (via the Model Context Protocol) to geospatial data.
+        Enabling AI agents to perform complex spatial analysis tasks such as identifying new city parks within a five‑minute walk of a school requires a reliable, standards‑compliant map engine. The OGC API - Processes specification provides exactly that: a well‑defined set of HTTP endpoints that any client, including AI systems, can invoke consistently.
     </p>
-    
     <p>
-        I'm going to walk you through how I set up a fully working backend that lets anyone submit a geospatial operation over an API and get results back, all following
-        an open international standard.
+        This post documents the backend I built for my Google Summer of Code (GSoC) 2026 application with 52°North. I focus on the technical decisions, the trade‑offs I evaluated, and how you can reproduce a production‑grade, OGC‑compliant spatial service.
+    </p>
+
+    <div class="challenge-box">
+        <strong>The Code Challenge</strong>
+        <p style="margin-top: 0.5rem; margin-bottom: 0.5rem; font-size: 0.95rem;">
+            <strong>Task 1:</strong> Deploy and rigorously configure a backend that fully implements the OGC API – Processes standard, including containerization and production considerations.
+        </p>
+        <p style="margin-bottom: 0; font-size: 0.95rem;">
+            <strong>Task 2:</strong> Validate the setup by implementing a meaningful geospatial process, registering it, and exercising the complete execution lifecycle (submission, asynchronous monitoring, and result retrieval).
+        </p>
+    </div>
+
+    <p>
+        The following sections walk through my approach, the stack I selected, and the architectural reasoning behind each choice.
     </p>
 
     <div class="toc">
         <strong>What's in this post</strong>
         <ul>
-            <li><a href="#problem">The Problem</a></li>
-            <li><a href="#ogc">What is OGC API?</a></li>
-            <li><a href="#approach">My Approach</a></li>
-            <li><a href="#architecture">Architecture &amp; Tech Stack</a></li>
-            <li><a href="#process">The Buffer Process</a></li>
-            <li><a href="#debugging">A tiny bug</a></li>
-            <li><a href="#results">Results &amp; Validation</a></li>
-            <li><a href="#next">What's Next</a></li>
+            <li><a href="#approach-1">Approach Task 1: The Backend &amp; Standards</a></li>
+            <li><a href="#tech-stack">Choosing the Tech Stack</a></li>
+            <li><a href="#approach-2">Approach Task 2: Executing a Spatial Process</a></li>
+            <li><a href="#lifecycle">Understanding the Async Lifecycle</a></li>
+            <li><a href="#debugging">Debugging config error</a></li>
+            <li><a href="#metrics">Performance Metrics</a></li>
+            <li><a href="#production">Trade&#8209;offs &amp; Scaling Considerations</a></li>
+            <li><a href="#whats-next">What's Next</a></li>
         </ul>
     </div>
 
-    <h2 id="problem">The Problem</h2>
+    <h2 id="approach-1">Approach Task 1: The Backend &amp; Standards</h2>
     <p>
-        The <a href="https://ogcapi.ogc.org/processes/" target="_blank">OGC API – Processes</a> standard defines
-        a REST API for discovering, executing, and managing geospatial processes over HTTP. Any client
-        that speaks this standard can talk to any server that implements it, regardless of what's running under the hood.
+        Before writing any code, it is essential to understand what the <a href="https://ogcapi.ogc.org/processes/" target="_blank">OGC API – Processes</a> standard actually defines.
     </p>
     <p>
-        My goal was to <strong>deploy a working OGC API -> Processes backend, register a custom geospatial process</strong> and from submitting a job to getting the result back.
-    </p>
-
-    <h2 id="ogc">What is OGC API</h2>
-    <p>
-        Imagine you have an API like any other REST service. You can ask it "what can you do?" and it
-        responds with a list of available operations. You pick one, send it some input data (say, a point on a map and a distance),
-        and it sends back the result (a circle around that point). That's essentially it.
-    </p>
-    <p>
-        The standard defines a few key endpoints:
+        The specification establishes a common contract for exposing geoprocessing capabilities over HTTP. By adhering to it, we avoid the fragmentation that would otherwise force every GIS backend to invent its own API, making it very difficult for AI agents or generic clients to interoperate.
     </p>
     <table>
         <thead>
-            <tr><th>Endpoint</th><th>What it does</th></tr>
+            <tr>
+                <th>Endpoint</th>
+                <th>Description</th>
+            </tr>
         </thead>
         <tbody>
-            <tr><td><code>GET /processes</code></td><td>List all available processes</td></tr>
-            <tr><td><code>GET /processes/{id}</code></td><td>Describe a specific process (inputs, outputs)</td></tr>
-            <tr><td><code>POST /processes/{id}/execution</code></td><td>Run a process</td></tr>
-            <tr><td><code>GET /jobs</code></td><td>List submitted jobs</td></tr>
-            <tr><td><code>GET /jobs/{jobId}</code></td><td>Check job status</td></tr>
-            <tr><td><code>GET /jobs/{jobId}/results</code></td><td>Get the results</td></tr>
+            <tr>
+                <td><code>GET /processes</code></td>
+                <td>Lists all processes the server can execute.</td>
+            </tr>
+            <tr>
+                <td><code>GET /processes/{id}</code></td>
+                <td>Returns the definition (inputs/outputs) of a specific process.</td>
+            </tr>
+            <tr>
+                <td><code>POST /processes/{id}/execution</code></td>
+                <td>Triggers execution of the chosen process with supplied parameters.</td>
+            </tr>
+            <tr>
+                <td><code>GET /jobs/{jobId}</code></td>
+                <td>Retrieves the current status of an asynchronous job.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2 id="tech-stack">Choosing the Tech Stack</h2>
+    <p>
+        For the implementation I selected <a href="https://pygeoapi.io/" target="_blank">pygeoapi</a>. As the reference open‑source implementation of the OGC API standards, it guarantees strict compliance out of the box and provides a minimal, extensible Python framework.
+    </p>
+    <p>
+        <strong>Why pygeoapi over a custom solution?</strong> Building a standards‑compliant server from scratch would require re‑implementing request validation, OpenAPI generation, and many edge‑case behaviours that the OGC community has already codified. Leveraging pygeoapi lets me focus on the domain‑specific process logic while trusting the underlying stack to handle protocol details.
+    </p>
+    <!-- <img src="images/arch.webp" alt="OGC API Architecture Diagram showing a client requesting an HTTP endpoint hitting Gunicorn, pygeoapi, and Shapely."> -->
+    <img src="images/architecture.png" alt="OGC API Architecture Diagram showing a client requesting an HTTP endpoint hitting Gunicorn, pygeoapi, and Shapely.">
+    <ul>
+        <li><strong>Execution Environment (Docker Container):</strong> Guarantees reproducible builds and isolates dependencies.</li>
+        <li><strong>Web Server Gateway (Gunicorn):</strong> Provides a robust, production‑ready HTTP front‑end.</li>
+        <li><strong>Server Engine (pygeoapi on Flask):</strong> Interprets requests, enforces OGC compliance, and orchestrates processing.</li>
+        <li><strong>Spatial Math (Shapely):</strong> Performs geometry operations such as buffering.</li>
+        <li><strong>State Management (TinyDB):</strong> Tracks asynchronous job status in a lightweight JSON store for the prototype.</li>
+    </ul>
+
+    <h2 id="approach-2">Approach Task 2: Executing a Spatial Process</h2>
+    <p>
+        To demonstrate the backend, I implemented a classic <a href="https://en.wikipedia.org/wiki/Buffer_(GIS)" target="_blank">geometry buffer</a> process.
+    </p>
+    <p>
+        A buffer expands a geometry outward by a specified distance, producing a new polygon that represents the area of influence.
+    </p>
+    <p>
+        In pygeoapi, a process is defined by a Python class that declares its inputs (a GeoJSON geometry and a distance) and its output (the buffered geometry).
+    </p>
+    <img src="images/c1.webp" alt="Code snippet showing the implementation of the GeometryBufferProcessor class.">
+    <p>
+        The processor is registered via pygeoapi's YAML configuration:
+    </p>
+    <img src="images/c2.webp" alt="Code snippet showing the pygeoapi YAML configuration for the GeometryBufferProcessor.">
+
+    <p>This is how my buffer looked like in the end.</p>
+    <img src="images/process.png" alt="Info about the buffer process">
+
+    <h2 id="lifecycle">Understanding the Async Lifecycle</h2>
+    <p>
+        The challenge explicitly required exercising the <em>full lifecycle</em> of an asynchronous process execution.
+    </p>
+    <p>
+        Spatial operations can be computationally intensive; a request that buffers an entire country would exceed typical HTTP timeouts. Therefore, the API must support asynchronous job handling.
+    </p>
+    <p>
+        My client script follows these steps:
+    </p>
+    <img src="images/cl.svg" alt="Client script for the GeometryBufferProcessor.">
+    <ol>
+        <li><strong>Submission:</strong> POST a square geometry to <code>/processes/geometry-buffer/execution</code>.</li>
+        <li><strong>Tracking:</strong> The server immediately returns <code>201 Created</code> with a unique <code>jobId</code>.</li>
+        <li><strong>Monitoring:</strong> The client polls <code>GET /jobs/{jobId}</code> until the status changes to <code>successful</code>.</li>
+        <li><strong>Retrieval:</strong> Finally, <code>GET /jobs/{jobId}/results</code> returns the buffered GeoJSON.</li>
+    </ol>
+    <img src="images/out.svg" alt="JSON output showing the expanded coordinates of the buffered polygon">
+    <p class="image-caption">The mathematical result: Our 1x1 square expanded outward represented in GeoJSON geometry.</p>
+    <p>Here's a visualuzation of our 1x1 square before and after buffering.</p>
+    <img src="images/visualuzation.webp" alt="Visualization graphic showing a 1x1 polygon being expanded into a larger buffered polygon with rounded corners.">
+    <p class="image-caption">Visualizing the Buffer: Note how the original square's sharp corners become perfectly rounded in the expansion.</p>
+
+    <h2 id="debugging">Debugging config error</h2>
+    <p>
+        Containerizing the application initially caused an infinite restart loop. <code>docker ps</code> showed the container in a restart loop
+    </p>
+    <pre><code>CONTAINER ID   IMAGE              STATUS
+0713fd49497f   ogc-mcp-pygeoapi   Restarting (255) 4 seconds ago
+</code></pre>
+    <p>
+        pygeoapi loads custom processors dynamically, so the container needed to expose the directory containing my code via <code>PYTHONPATH</code>.
+    </p>
+    <pre><code>ENV PYTHONPATH="/pygeoapi"
+</code></pre>
+    <p>
+        Adding this line to the <code>Dockerfile</code> resolved the import error, and all 35 lifecycle tests passed.
+    </p>
+    <img src="images/tests.png" alt="Terminal output showing 17 passed tests in a row with green checkmarks">
+
+    </p>
+
+    
+    <h2 id="metrics">Performance Metrics</h2>
+    <p>
+        After fixing all tests, I ran <code>validate_tests.py</code> against a local Docker container to capture real-world latency for each endpoint. The suite performs 35 assertions and a 5&times; repeated latency benchmark on the lightweight endpoints.
+    </p>
+    <p>
+        All measurements are single-node, unwarmed, on localhost (no network hop). They represent the baseline overhead of the full pygeoapi + Gunicorn + Shapely stack.
+    </p>
+    <table>
+        <thead>
+            <tr>
+                <th>Endpoint / Operation</th>
+                <th>p50 latency</th>
+                <th>avg latency</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>GET /</code></td>
+                <td>7 ms</td>
+                <td>20 ms</td>
+                <td>Cold-start variance; warm avg ≈ 7 ms</td>
+            </tr>
+            <tr>
+                <td><code>GET /conformance</code></td>
+                <td>6 ms</td>
+                <td>7 ms</td>
+                <td>Pure metadata, sub-10 ms consistently</td>
+            </tr>
+            <tr>
+                <td><code>GET /processes</code></td>
+                <td>9 ms</td>
+                <td>10 ms</td>
+                <td>Process registry scan</td>
+            </tr>
+            <tr>
+                <td><code>GET /processes/geometry-buffer</code></td>
+                <td>9 ms</td>
+                <td>9 ms</td>
+                <td>Single-process description</td>
+            </tr>
+            <tr>
+                <td><code>POST /execution</code> — hello-world (sync)</td>
+                <td>21 ms</td>
+                <td>21 ms</td>
+                <td>Trivial echo process</td>
+            </tr>
+            <tr>
+                <td><code>POST /execution</code> — buffer Point (sync)</td>
+                <td>37 ms</td>
+                <td>37 ms</td>
+                <td>Shapely buffer call included</td>
+            </tr>
+            <tr>
+                <td><code>POST /execution</code> — buffer LineString (sync)</td>
+                <td>14 ms</td>
+                <td>14 ms</td>
+                <td>Simpler geometry, faster</td>
+            </tr>
+            <tr>
+                <td><code>POST /execution</code> — async submit</td>
+                <td>15 ms</td>
+                <td>15 ms</td>
+                <td>Returns 201 + Location header immediately</td>
+            </tr>
+            <tr>
+                <td>Async job polling (total wait)</td>
+                <td>16 ms</td>
+                <td>16 ms</td>
+                <td>Job finished within the first poll cycle</td>
+            </tr>
+            <tr>
+                <td><code>GET /jobs/{id}/results</code></td>
+                <td>9 ms</td>
+                <td>9 ms</td>
+                <td>TinyDB read + JSON serialisation</td>
+            </tr>
         </tbody>
     </table>
     <p>
-        It supports both <strong>synchronous</strong> execution (send request → get result immediately) and
-        <strong>asynchronous</strong> execution (send request → get a job ID → poll for status → retrieve results when done).
-        This is crucial for long-running operations like raster analysis or large-scale data aggregation.
+        Important takeaway: even the heaviest synchronous buffer operation completes in under 40 ms on localhost. The async path is even faster to <em>respond</em> (15 ms) because the server returns a job handle immediately and the geometry computation happens in the background.
     </p>
+    <div class="highlight">
+        <strong>Bottleneck to watch:</strong> At scale, the bottleneck would shift from Shapely (which is pure-C and very fast for typical inputs) to TinyDB's file-lock contention under concurrent writes. A PostgreSQL-backed job manager would eliminate this.
+    </div>
+    
+    <hr>
 
-    <h2 id="approach">My Approach</h2>
+    <h2 id="whats-next">What&rsquo;s Next</h2>
+    <h3>1. MCP (Model Context Protocol) Integration</h3>
     <p>
-        I didn't want to build an OGC API server from scratch. I chose <a href="https://pygeoapi.io" target="_blank">pygeoapi</a>, the official OGC reference implementation
-        for several API standards. It's written in Python, configured via YAML, and has a clean plugin architecture for adding
-        custom processes.
+        The longer-term goal is to expose these OGC endpoints as <strong>MCP tools</strong>, so that LLM agents (Claude, Gemini, etc.) can invoke spatial processes directly via natural language. This means wrapping each OGC endpoint in an MCP tool definition and hosting a compliant MCP server alongside pygeoapi.
     </p>
+    <h3>2. Replace TinyDB with a Production Job Store</h3>
     <p>
-        The plan was:
+        TinyDB is a single-file JSON store with no concurrency guarantees. Under load, parallel job submissions will cause write conflicts. The next step is to replace it with a <a href="https://www.postgresql.org/" target="_blank">PostgreSQL</a>-backed manager or a dedicated queue like <a href="https://docs.celeryq.dev/" target="_blank">Celery + Redis</a>, which pygeoapi already supports via its manager plugin architecture.
     </p>
-    <ul>
-        <li>Use the official <code>geopython/pygeoapi</code> Docker image as the base</li>
-        <li>Write a custom process plugin (geometry buffer using <a href="https://shapely.readthedocs.io/" target="_blank">Shapely</a>)</li>
-        <li>Configure everything via a single YAML file</li>
-        <li>Wrap it in Docker Compose for one-command deployment</li>
-        <li>Write a validation script that tests the entire lifecycle</li>
-    </ul>
-
-    <h2 id="architecture">Architecture &amp; Tech Stack</h2>
-    <img src="images/arch.webp" alt="OGC API Architecture">
-
-    <h3>The tech involved</h3>
-    <ul>
-        <li><strong><a href="https://pygeoapi.io" target="_blank">pygeoapi</a></strong> — Python server implementing OGC API standards. YAML-configured, plugin-based.</li>
-        <li><strong><a href="https://shapely.readthedocs.io/" target="_blank">Shapely</a></strong> — Python library for geometric operations. I used it to compute buffers around input geometries.</li>
-        <li><strong><a href="https://tinydb.readthedocs.io/" target="_blank">TinyDB</a></strong> — A lightweight document-oriented database. pygeoapi uses it to track async job state without needing PostgreSQL or MongoDB.</li>
-        <li><strong><a href="https://www.docker.com/" target="_blank">Docker</a></strong> — The whole thing runs in a single container. <code>docker compose up --build</code>.</li>
-        <li><strong><a href="https://gunicorn.org/" target="_blank">Gunicorn</a></strong> — Production-grade WSGI server that pygeoapi's Docker image uses internally.</li>
-    </ul>
-
-    <h2 id="process">The Buffer Process</h2>
+    <h3>3. True Async Workers</h3>
     <p>
-        I needed a process that's simple enough to be a clear demonstration, but meaningful enough to actually do something
-        geospatial. A <strong>geometry buffer</strong> fit perfectly: you give it a shape (a point, a line, a polygon) and a
-        distance, and it returns a new polygon that represents the area within that distance of the original shape.
+        Currently, the "async" mode in pygeoapi runs the process in a thread pool managed by the WSGI server, not a separate worker process. For CPU-intensive tasks (e.g., buffering a country-scale geometry with millions of vertices), the computation should be offloaded to a dedicated Celery worker so the HTTP server remains non-blocking.
     </p>
+    <h3>4. Additional OGC Processes</h3>
     <p>
-        Think of it like drawing a circle around a point on a map, or expanding a boundary outward by a certain amount.
-        This is one of the most fundamental operations in GIS. It is usually used for proximity analysis, impact zones, setback calculations,
-        you name it.
+        The buffer process demonstrates the pattern, but a useful MCP-connected backend would expose a richer library: intersection, union, simplification, area/perimeter calculation, and coordinate reprojection. Each can be implemented as a new <code>BaseProcessor</code> subclass with minimal boilerplate.
     </p>
+    <h3>5. Authentication &amp; Rate Limiting</h3>
     <p>
-        Writing the process plugin meant implementing pygeoapi's <code>BaseProcessor</code> class. The key parts:
+        A public OGC API endpoint needs OAuth 2.0 / API-key authentication and per-client rate limiting to prevent abuse. pygeoapi supports security plugins, and a reverse proxy layer (NGINX or AWS API Gateway) can enforce per-IP limits at the edge.
     </p>
-    <img src="images/c1.webp" alt="Buffer Process">
-
+    <h3>6. CI/CD Pipeline</h3>
     <p>
-        Then it's just a matter of registering it in the YAML config:
-    </p>
-    <img src="images/c2.webp" alt="Buffer Process">
-
-    <p>That's it. pygeoapi picks it up, generates the OpenAPI spec, and exposes it at <code>/processes/geometry-buffer</code>.</p>
-
-    <h2 id="demo">Try it yourself: A Python Client</h2>
-    <p>
-        Want to see it in action? Here is a simple Python script that sends a Polygon to the API and asks for a 0.5 degree buffer.
-    </p>
-    <img src="images/cl.webp" alt="Client">
-    <p>
-        And here is the output you get back:
-    </p>
-    <img src="images/out.webp" alt="Output">
-
-    <p style="background-color: #fafafa; border-left: 4px solid #1a6fb5; padding: 1rem; margin: 1.5rem 0;">
-        <strong>What we wished:</strong> We sent a <code>1x1</code> square (coordinates <code>0,0</code> to <code>1,1</code>) and asked for a <code>0.5</code> degree buffer. Note that the input has 5 coordinates because GeoJSON requires polygons to be "closed" (the last point must equal the first).<br>
-        <strong>What we got:</strong> A much larger polygon. You can see the coordinates have expanded (e.g., from <code>0.0</code> to <code>-0.5</code>), and the corners are rounded (extra points like <code>-0.46...</code>) because of the <code>resolution: 4</code> parameter.<br>
-        <strong>What it means:</strong> The server received our JSON, parsed the geometry, performed the mathematical buffering operation using Shapely, and returned the correct GeoJSON result with a <code>200 OK</code> status.
-    </p>
-
-    <p>
-        Here's a simple visualization demonstrating our execution:
-    </p>
-    <img src="images/comp.webp" alt="Visualization">
-    <p style="background-color: #fafafa; border-left: 4px solid #1a6fb5; padding: 1rem; margin: 1.5rem 0;">Image Credits : Google Gemini 3 Pro (Nano Banana Pro).</p>
-
-    <h2 id="debugging">A tiny mistake I made during the setup</h2>
-    <p>
-        Here's where it got interesting. I had everything wired up : Dockerfile, config, custom process, validation script.
-        I ran <code>docker compose up --build</code>, waited, ran my tests, and… every single test failed.
-        The server wasn't responding at all.
-    </p>
-    <p>
-        <code>docker ps</code> showed the container in a <strong>restart loop</strong>:
-    </p>
-<pre><code>CONTAINER ID   IMAGE              STATUS
-0713fd49497f   ogc-mcp-pygeoapi   Restarting (255) 4 seconds ago</code></pre>
-    <p>
-        Exit code 255. Not helpful. I pulled the container logs and found the culprit:
-    </p>
-<pre><code>ModuleNotFoundError: No module named 'ogc_processes'</code></pre>
-    <p>
-        The issue was: My Dockerfile copied the process files into <code>/pygeoapi/ogc_processes/</code>, and pygeoapi's
-        entrypoint tries to generate the OpenAPI document at startup which means it needs to <em>import</em> every registered
-        process plugin. But <code>/pygeoapi/</code> isn't on Python's module search path inside the container.
-    </p>
-    <p>
-        The fix was one line in the Dockerfile:
-    </p>
-<pre><code>ENV PYTHONPATH="/pygeoapi"</code></pre>
-    <p>
-        The container started, the OpenAPI doc generated successfully, and all 17 tests passed on the next run.
-    </p>
-
-    <h2 id="results">Results &amp; Validation</h2>
-    <p>
-        I wrote a bash validation script that tests the entire OGC API – Processes lifecycle. Here's what it checks:
-    </p>
-    <ol>
-        <li>Landing page returns valid metadata</li>
-        <li>Conformance endpoint lists OGC conformance classes</li>
-        <li>Process listing includes both <code>hello-world</code> and <code>geometry-buffer</code></li>
-        <li>Process description returns inputs, outputs, and metadata</li>
-        <li>Synchronous execution of <code>hello-world</code> (smoke test)</li>
-        <li>Synchronous execution of <code>geometry-buffer</code> with a Point</li>
-        <li>Synchronous execution of <code>geometry-buffer</code> with a LineString</li>
-        <li>Asynchronous execution: job creation → status polling → result retrieval</li>
-        <li>Jobs endpoint returns the job list</li>
-    </ol>
-
-    <img src="images/tests.webp" alt="Buffer Process">
-
-    <h2 id="next">What's Next</h2>
-    <p>
-        Here's what could be added / improved:
-    </p>
-    <ul>
-        <li><strong>More processes</strong> — The plugin architecture makes this straightforward.</li>
-        <li><strong>Input validation</strong> — proper JSON Schema validation for process inputs, better error messages.</li>
-        <li><strong>Authentication</strong> — API key or OAuth2 middleware for production deployments.</li>
-        <li><strong>PostgreSQL job manager</strong> — replace TinyDB with PostgreSQL for multi-instance scaling.</li>
-        <li><strong>CI/CD pipeline</strong> — automated testing on every push, with the validation script running against a fresh container.</li>
-        <li><strong>MCP integration</strong> — connecting this backend to a Model Context Protocol server for AI-driven geospatial workflows.</li>
-    </ul>
-
-    <p>
-        The whole project is open source <a href="https://github.com/dask-58/ogc-mcp">here</a>. Clone the repo, run
-        <code>docker compose up --build</code>, and you have a working OGC API – Processes server in under a minute.
-        Add a new process by dropping a Python file in <code>processes/</code> and adding three lines to the YAML config.
+        The natural next step is to run tests on every pull request via GitHub Actions, building the Docker image, spinning up the container, running the test suite, and failing the build if any check regresses.
     </p>
     <hr>
     <p>
-        Thanks for reading.
-        You can visit my webpage <a href="https://dhruvkoli.dev">here</a>.
-        Special thanks to the 52°North community for the inspiration and clear standards documentation.
+        Thanks for reading
+        <p>
+            You can check out my full open-source codebase, including the Docker setup and validation scripts, <a href="https://github.com/dask-58/ogc-mcp">right here on GitHub</a>.
+        </p>
     </p>
-    <p style="font-size: 0.85rem; color: #777; margin-top: 1rem; font-style: italic;">
-        Note: AI (LLMs) were used in this blog to correct any punctual or grammatical errors or for refinement only; the content was written by my hands.
-    </p>
+    <footer>
+        Note: AI (LLMs) were used in this blog to correct any punctual or grammatical errors or for refinement of UI/UX only; the content was written by my hands.
+    </footer>
 </body>
 </html>
+
+
